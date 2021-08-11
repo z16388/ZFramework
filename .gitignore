@@ -1,0 +1,12 @@
+/Library/
+/.vs/
+/AssetBundles/
+/Logs/
+/Obj/
+/obj/
+/*.sln
+/*.csproj
+/Temp
+/Assets/Scripts/ConfigData/
+/Assets/FairyGUI/Examples/
+/Assets/StreamingAssets/*
