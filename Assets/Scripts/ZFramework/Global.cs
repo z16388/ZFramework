@@ -1,10 +1,12 @@
-﻿using System.Collections;
+﻿using FairyGUI;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace ZFramework
 {
-    public class Global: MonoBehaviour
+    public class Global: MonoBehaviourSimplify
     {
         public static GameObject UIRoot;
         public static GameObject MainCameraObj;
@@ -22,10 +24,13 @@ namespace ZFramework
 
         private Global()
         {
-            
         }
 
         private void Awake()
+        {
+        }
+
+        private void Start()
         {
             mainObject = gameObject;
             UIRoot = GameObject.Find("UIRoot");
@@ -41,6 +46,38 @@ namespace ZFramework
             UIHelper = new UIHelper();
             AudioHelper = new AudioHelper();
             UMath = new UMath();
+
+            RegisterMessages();
+            ShowSplash();
+        }
+
+        private void RegisterMessages()
+        {
+            RegisterMsg(Messages.Common.StartGame, OnStartGame);
+        }
+
+        private void OnStartGame(object obj)
+        {
+            UIHelper.Close<UI_SplashUI>();
+            UIPackage.RemovePackage("UI/Splash");
+            StartGame();
+        }
+
+        private void StartGame()
+        {
+            SceneManager.LoadScene("Game");
+            UIHelper.Open<UI_MainUI>();
+            UIHelper.Close<UI_SplashUI>();
+        }
+
+        private void ShowSplash()
+        {
+            UIHelper.Open<UI_SplashUI>();
+        }
+
+        protected override void VDestroy()
+        {
+            
         }
     }
 }

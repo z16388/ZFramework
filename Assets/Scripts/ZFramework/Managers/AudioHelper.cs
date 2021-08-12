@@ -17,11 +17,9 @@ namespace ZFramework
         public const string BGMDir = "Audio/BGM/";
 
         //BGM播放器
-        private AudioSource bgmPlayer;
-        public AudioSource BgmPlayer { get { return bgmPlayer; } }
+        private static AudioSource bgmPlayer;
         //音效播放器
-        private AudioSource soundPlayer;
-        public AudioSource SoundPlayer { get { return soundPlayer; } }
+        private static AudioSource soundPlayer;
 
         //是否全局静音
         public bool IsGlobalMute { get { return bgmPlayer.mute && soundPlayer.mute; } }
@@ -49,7 +47,7 @@ namespace ZFramework
         /// <summary>
         /// 播放音效
         /// </summary>
-        public void PlaySound(string soundName, float volume = 1, bool loop = false)
+        public static void PlaySound(string soundName, float volume = 1, bool loop = false)
         {
             AudioClip clip = Resources.Load<AudioClip>(SoundDir + soundName);
             if (clip == null)
@@ -66,7 +64,7 @@ namespace ZFramework
         /// <summary>
         /// 播放背景音乐
         /// </summary>
-        public void PlayBGM(string bgmName, float volume = 1, bool loop = true)
+        public static void PlayBGM(string bgmName, float volume = 1, bool loop = true)
         {
             AudioClip clip = Resources.Load<AudioClip>(BGMDir + bgmName);
             if (clip == null)

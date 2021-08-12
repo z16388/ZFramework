@@ -9,6 +9,7 @@ namespace ZFramework
         public static class Common
         {
             public static string Test = "Common.Test";
+            public static string StartGame = "Common.StartGame";
         }
 
         public static class Setting

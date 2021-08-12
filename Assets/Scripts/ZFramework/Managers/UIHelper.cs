@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
-using ZUI.Main;
 using ConfigData;
 
 namespace ZFramework
@@ -35,6 +34,7 @@ namespace ZFramework
     public class UIHelper
     {
         private static Dictionary<string, BaseDialog> _uiDict;
+        private static Dictionary<string, GComponent> _uiViews;
         private static int _uiMaxCount = 20;
         private static Dictionary<string, string> _uiPackDict;
 
@@ -45,6 +45,7 @@ namespace ZFramework
             UIConfig.defaultFont = "OPPOSans-M";
 
             _uiDict = new Dictionary<string, BaseDialog>();
+            _uiViews = new Dictionary<string, GComponent>();
             _uiPackDict = new Dictionary<string, string>();
             SetUIMaxCount();
             InitPackData();
@@ -96,26 +97,27 @@ namespace ZFramework
             }
             string uiPackageName = _uiPackDict[uiKey];
 
+            uiDialog = Global.UIRoot.AddComponent<T>();
+            uiDialog.Data = arg;
+            DialogInfo dialogInfo = new DialogInfo(uiPackageName, uiKey);
+            uiDialog.SetDialogInfo(dialogInfo);
+
             if (UIHelper.IsContainUI<T>())
             {
-                uiDialog = (T)_uiDict[uiName];
-                uiDialog.Data = arg;
-                uiDialog.GetView().visible = true;
+                GObject targetUIObject = uiDialog.GetViewObject();
+                targetUIObject.visible = true;
+                uiDialog.SetDialogView(_uiViews[uiName]);
             }
             else
             {
-                uiDialog = new T();
-                uiDialog.Data = arg;
-
-                DialogInfo dialogInfo = new DialogInfo(uiPackageName, uiKey);
-                uiDialog.SetDialogInfo(dialogInfo);
-
                 GComponent view = UIPackage.CreateObject(dialogInfo.GetPackName(), dialogInfo.GetDialogName()) as GComponent;
                 view.SetSize(GRoot.inst.width, GRoot.inst.height);
+                view.name = dialogInfo.GetDialogName();
                 GRoot.inst.AddChild(view);
                 uiDialog.SetDialogView(view);
 
                 TryAddToDict(uiName, uiDialog);
+                _uiViews.Add(uiName, view);
             }
 
             uiDialog.OnBeforeCreate();
@@ -133,7 +135,9 @@ namespace ZFramework
                 T uiDialog = (T)_uiDict[typeof(T).Name];
                 uiDialog.RemoveListener();
                 uiDialog.OnHide();
+                uiDialog.OnDestroy();
                 uiDialog.GetView().visible = false;
+                uiDialog.Close();
             }
         }
 
@@ -166,13 +170,7 @@ namespace ZFramework
         {
             UIPackage.AddPackage("UI/Common").LoadAllAssets();
             UIPackage.AddPackage("UI/Main").LoadAllAssets();
-        }
-
-        public static void TestUI()
-        {
-            //GComponent view = UIPackage.CreateObject("Main", "TestUI").asCom;
-            //GRoot.inst.AddChild(view);
-            UIHelper.Open<UI_TestUI>(null);
+            UIPackage.AddPackage("UI/Splash").LoadAllAssets();
         }
     }
 }

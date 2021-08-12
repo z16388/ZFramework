@@ -25,8 +25,7 @@ public class ZTest : MonoBehaviourSimplify
     {
 #if UNITY_EDITOR
         MDebug.LogDev("Do Test");
-
-        UIHelper.TestUI();
+        UIHelper.Open<UI_MainUI>();
         //Global.AudioHelper.PlaySound("Test");
         //Global.AudioHelper.PlayBGM("bgm");
 #endif
@@ -35,6 +34,10 @@ public class ZTest : MonoBehaviourSimplify
     private void OnDestroy()
     {
         MsgHelper.UnRegisterAll(Messages.Common.Test);
+    }
+
+    protected override void VDestroy()
+    {
     }
 
     //override protected void VDestroy()

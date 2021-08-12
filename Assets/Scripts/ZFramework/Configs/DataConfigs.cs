@@ -8,7 +8,8 @@ namespace ConfigData
     {
         private static List<string> baseDataNameList = new List<string>()
         {
-            "Test",
+            "Music",
+            "Sound",
             "UI"
         };
         private static List<string> battleDataNameList = new List<string>()
