@@ -136,7 +136,7 @@ namespace ZFramework
                 uiDialog.RemoveListener();
                 uiDialog.OnHide();
                 uiDialog.OnDestroy();
-                uiDialog.GetView().visible = false;
+                //uiDialog.GetView().visible = false;
                 uiDialog.Close();
             }
         }

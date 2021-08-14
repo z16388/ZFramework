@@ -22,16 +22,18 @@ namespace ZFramework
         private static AudioSource soundPlayer;
 
         //是否全局静音
-        public bool IsGlobalMute { get { return bgmPlayer.mute && soundPlayer.mute; } }
+        public bool IsGlobalMute { get { return BgmPlayer.mute && soundPlayer.mute; } }
+
+        public static AudioSource BgmPlayer { get => bgmPlayer; set => bgmPlayer = value; }
 
         public AudioHelper()
         {
-            if (bgmPlayer == null)
+            if (BgmPlayer == null)
             {
-                bgmPlayer = Global.mainObject.AddComponent<AudioSource>();
-                bgmPlayer.loop = true;
-                bgmPlayer.playOnAwake = false;
-                bgmPlayer.mute = false;
+                BgmPlayer = Global.mainObject.AddComponent<AudioSource>();
+                BgmPlayer.loop = true;
+                BgmPlayer.playOnAwake = false;
+                BgmPlayer.mute = false;
             }
             if (soundPlayer == null)
             {
@@ -72,10 +74,10 @@ namespace ZFramework
                 Debug.LogError("没有此音频：" + bgmName);
                 return;
             }
-            bgmPlayer.clip = clip;
-            bgmPlayer.volume = volume;
-            bgmPlayer.loop = loop;
-            bgmPlayer.Play();
+            BgmPlayer.clip = clip;
+            BgmPlayer.volume = volume;
+            BgmPlayer.loop = loop;
+            BgmPlayer.Play();
         }
 
         /// <summary>
@@ -85,7 +87,7 @@ namespace ZFramework
         {
             bgmFade = true;
             bgmFadeBeginTime = Time.realtimeSinceStartup;
-            bgmFadeBeginVolume = bgmPlayer.volume;
+            bgmFadeBeginVolume = BgmPlayer.volume;
             bgmFadeDuration = fadeDuration;
         }
 
@@ -94,7 +96,7 @@ namespace ZFramework
         /// </summary>
         public void PausePlay()
         {
-            bgmPlayer.Pause();
+            BgmPlayer.Pause();
             soundPlayer.Pause();
         }
 
@@ -103,7 +105,7 @@ namespace ZFramework
         /// </summary>
         public void ResumePlay()
         {
-            bgmPlayer.Play();
+            BgmPlayer.Play();
             soundPlayer.Play();
         }
 
@@ -112,7 +114,7 @@ namespace ZFramework
         /// </summary>
         public void StopPlay()
         {
-            bgmPlayer.Stop();
+            BgmPlayer.Stop();
             soundPlayer.Stop();
         }
 
@@ -121,7 +123,7 @@ namespace ZFramework
         /// </summary>
         public void SetMuteState(bool b)
         {
-            bgmPlayer.mute = b;
+            BgmPlayer.mute = b;
             soundPlayer.mute = b;
         }
 
@@ -130,7 +132,7 @@ namespace ZFramework
         /// </summary>
         public void SetBgmMuteState(bool b)
         {
-            bgmPlayer.mute = b;
+            BgmPlayer.mute = b;
         }
 
         /// <summary>
@@ -146,7 +148,7 @@ namespace ZFramework
         /// </summary>
         public void StopPlayBGM()
         {
-            bgmPlayer.Stop();
+            BgmPlayer.Stop();
         }
 
         /// <summary>
@@ -154,7 +156,7 @@ namespace ZFramework
         /// </summary>
         public void PausePlayBGM()
         {
-            bgmPlayer.Pause();
+            BgmPlayer.Pause();
         }
 
         /// <summary>
@@ -162,7 +164,7 @@ namespace ZFramework
         /// </summary>
         public void ResumePlayBGM()
         {
-            bgmPlayer.Play();
+            BgmPlayer.Play();
         }
 
         /// <summary>
@@ -188,12 +190,12 @@ namespace ZFramework
                 float delta = Time.realtimeSinceStartup - bgmFadeBeginTime;
                 if (delta <= bgmFadeDuration)
                 {
-                    bgmPlayer.volume = UnityEngine.Mathf.Lerp(bgmFadeBeginVolume, 0, delta / bgmFadeDuration);
+                    BgmPlayer.volume = UnityEngine.Mathf.Lerp(bgmFadeBeginVolume, 0, delta / bgmFadeDuration);
                 }
                 else
                 {
                     bgmFade = false;
-                    bgmPlayer.volume = 0;
+                    BgmPlayer.volume = 0;
                 }
             }
         }

@@ -118,7 +118,7 @@ namespace ZFramework
             Component target = Global.UIRoot.GetComponent("UI_" + name);
             Destroy(target);
 
-            //GRoot.inst.GetChild(name).Dispose();
+            GetViewObject().visible = false;
         }
     }
 }

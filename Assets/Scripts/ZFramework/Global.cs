@@ -59,7 +59,7 @@ namespace ZFramework
         private void OnStartGame(object obj)
         {
             UIHelper.Close<UI_SplashUI>();
-            UIPackage.RemovePackage("UI/Splash");
+            //UIPackage.RemovePackage("UI/Splash");
             StartGame();
         }
 
